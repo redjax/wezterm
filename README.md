@@ -1,5 +1,21 @@
 # Wezterm Configuration <!-- omit in toc -->
 
+<!-- Repo image -->
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./.static/img/wezterm-icon-square.png">
+    <img src="./.static/img/wezterm-icon-square.png" height="200">
+  </picture>
+</p>
+
+<p align="center">
+  <img alt="GitHub Created At" src="https://img.shields.io/github/created-at/redjax/wezterm">
+  <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/redjax/wezterm">
+  <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/y/redjax/wezterm">
+  <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/redjax/wezterm">
+  <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/redjax/wezterm">
+</p>
+
 My configuration for [Wezterm terminal emulator](https://wezterm.org).
 
 ## Table of Contents <!-- omit in toc -->
