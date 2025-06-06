@@ -4,6 +4,11 @@ local wezterm = require 'wezterm'
 -- Config object
 local config = wezterm.config_builder()
 
+-- Cross-platform home directory
+local function get_home_dir()
+    return os.getenv("HOME") or os.getenv("USERPROFILE") or ""
+end
+
 -- Detect platform
 -- \ Example: config.font_size = is_windows and 12 or is_mac and 16 or 14
 local is_linux = wezterm.target_triple:find('linux') ~= nil
@@ -36,6 +41,29 @@ local function scheme_for_appearance(appearance)
     end
 end
 
+-- Function to check if wezterm terminfo exists
+local function wezterm_terminfo_exists()
+    local home = get_home_dir()
+    local terminfo_paths = {
+      home ~= "" and (home .. "/.terminfo/w/wezterm") or nil,
+      "/usr/share/terminfo/w/wezterm",
+      "/lib/terminfo/w/wezterm",
+      "/usr/local/share/terminfo/w/wezterm",
+    }
+
+    for _, path in ipairs(terminfo_paths) do
+      if path then
+        local f = io.open(path, "r")
+        if f then
+          f:close()
+          return true
+        end
+      end
+    end
+
+    return false
+end
+
 -- Set color scheme dynamically
 config.color_scheme = scheme_for_appearance(get_appearance())
 
@@ -55,6 +83,9 @@ config.initial_rows = 28
 
 -- Set term starting directory
 config.default_cwd = wezterm.home_dir
+
+-- Disable close window prompt
+config.window_close_confirmation = "NeverPrompt"
 
 -- Change font size
 config.font_size = 12
@@ -78,7 +109,14 @@ if get_platform() == 'windows' then
     config.default_prog = {'zsh', '-l'}
   else
     config.default_prog = {'bash', '-l'}
-end  
+end
+
+-- Enable advanced wezterm features if wezterm terminfo exists
+if wezterm_terminfo_exists() then
+    config.term = "wezterm"
+  else
+    config.term = "xterm-256color"
+end
 
 -- Set terminal scrollback memory
 config.scrollback_lines = 3500
