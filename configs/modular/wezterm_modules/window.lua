@@ -1,7 +1,7 @@
 return function(config)
     -- Set window geometry
-    config.initial_cols = 120
-    config.initial_rows = 28
+    config.initial_cols = 122
+    config.initial_rows = 25
 
     -- Set default working directory
     config.default_cwd = require('wezterm').home_dir
