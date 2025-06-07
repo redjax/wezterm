@@ -11,7 +11,7 @@ return function(config)
     -- Set font, or fallback to defaults
     config.font = wezterm.font_with_fallback({
       -- Default font, installed with wezterm
-      'JetBrains Mono',
+      -- 'JetBrains Mono',
       'Hack Nerd Font Mono',
       'FiraCode Nerd Font Mono',
       table.unpack(font_fallback[config._platform] or {'JetBrains Mono'})
