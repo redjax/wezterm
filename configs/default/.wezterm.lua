@@ -87,6 +87,13 @@ config.default_cwd = wezterm.home_dir
 -- Disable close window prompt
 config.window_close_confirmation = "NeverPrompt"
 
+-- Set window transparency
+config.window_background_opacity = 0.95
+-- Set a background image for the terminal
+-- config.background = {
+--   { source = { File = "/path/to/image.png" }, opacity = 0.2 }
+-- }
+
 -- Change font size
 config.font_size = 12
 
@@ -131,6 +138,11 @@ config.inactive_pane_hsb = {saturation=0.8, brightness=0.7}
 -- \ Default: "TITLE | RESIZE"
 config.window_decorations = "TITLE | RESIZE"
 
+-- Set tab width
+config.tab_max_width = 25
+-- Enable 'fancy' tab bar
+config.use_fancy_tab_bar = true
+
 -- Hide tab bar when only 1 tab is open
 config.hide_tab_bar_if_only_one_tab = true
 
@@ -162,7 +174,37 @@ config.keys = {
         mods = 'CTRL|SHIFT',
         action = wezterm.action.ActivateCommandPalette,
     },
-}  
+}
+
+-- ##################
+-- # Mouse bindings #
+-- ##################
+config.mouse_bindings = {
+    {
+      -- CTRL+LeftClick = open link
+      event={Up={streak=1, button="Left"}},
+      mods="CTRL",
+      action="OpenLinkAtMouseCursor",
+    },
+}
+
+-- ################
+-- # Set ENV vars #
+-- ################
+config.set_environment_variables = {
+    -- VAR_NAME = 'value',
+}
+
+-- Set wezterm frontend dynamically
+-- \ Note: WebGPU does not support transparency
+-- if wezterm.target_triple:find('windows') then
+--   config.front_end = "WebGpu"
+--   config.webgpu_power_preference = "HighPerformance"
+-- elseif wezterm.target_triple:find('linux') then
+--   config.front_end = "OpenGL"
+-- else
+--   config.front_end = "WebGpu"
+-- end
 
 -- KEEP THIS AT THE BOTTOM OF YOUR CONFIG
 return config
