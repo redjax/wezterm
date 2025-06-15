@@ -3,8 +3,6 @@
 SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
 PARENT_DIR="$(dirname "$SCRIPT_PATH")"
 
-. "${PARENT_DIR}/check_installed.sh"
-
 function add_wezterm_apt_repository {
   if ! command -v curl >/dev/null 2>&1; then
     echo "[ERROR] curl is not installed"
@@ -37,6 +35,8 @@ function add_wezterm_apt_repository {
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  . "${PARENT_DIR}/check_installed.sh"
+
   add_wezterm_apt_repository
   if [[ $? -ne 0 ]]; then
     echo "Failed to install wezterm"

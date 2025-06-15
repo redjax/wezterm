@@ -2,8 +2,31 @@
 ## See all fonts at:
 #  https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts
 
+SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
+PARENT_DIR="$(dirname "$SCRIPT_PATH")"
+
 function install_nerdfont {
     FONT=$1
+
+    if ! command -v wget >/dev/null 2>&1; then
+      echo "[ERROR] wget is not installed"
+      return 1
+    fi
+
+    if ! command -v unzip >/dev/null 2>&1; then
+      echo "[ERROR] unzip is not installed"
+      return 1
+    fi
+
+    if ! command -v jq >/dev/null 2>&1; then
+      echo "[ERROR] jq is not installed"
+      return 1
+    fi
+
+    if ! command -v fc-cache >/dev/null 2>&1; then  
+      echo "[ERROR] fc-cache is not installed"
+      return 1
+    fi
 
     if [[ "${FONT}" == "" ]]; then
         FONT="Hack"
