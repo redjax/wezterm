@@ -8,6 +8,9 @@ PARENT_DIR="$(dirname "$SCRIPT_PATH")"
 . "${PARENT_DIR}/check_installed.sh"
 . "${PARENT_DIR}/add_repository.sh"
 . "${PARENT_DIR}/install_nerdfont.sh"
+. "${PARENT_DIR}/detect_distro.sh"
+
+LINUX_DISTRO=$(get_distro_id)
 
 function main {
   if command -v wezterm >/dev/null 2>&1; then
@@ -40,18 +43,41 @@ function main {
     return 1
   fi
 
-  add_wezterm_apt_repository
-  if [[ $? -ne 0 ]]; then
-    echo "[ERROR] Failed to add wezterm apt repository"
-    return 1
-  fi
-  
-  echo "Installing wezterm"
-  sudo apt install -y wezterm
-  if [[ $? -ne 0 ]]; then
-    echo "[ERROR] Failed to install wezterm"
-    return 1
-  fi
+  case "$LINUX_DISTRO" in
+    ubuntu|debian|pop|linuxmint)
+      echo "Detected Debian-based distribution: $LINUX_DISTRO"
+
+      add_wezterm_apt_repository
+      if [[ $? -ne 0 ]]; then
+        echo "[ERROR] Failed to add wezterm apt repository"
+        return 1
+      fi
+      
+      echo "Installing wezterm"
+      sudo apt install -y wezterm
+      if [[ $? -ne 0 ]]; then
+        echo "[ERROR] Failed to install wezterm"
+        return 1
+      fi
+
+      ;;
+    fedora|rhel|centos|rocky|almalinux)
+      echo "Detected Red Hat-based distribution: $DISTRO_ID"
+
+      add_wezterm_rpm_repository
+      sudo dnf install -y wezterm
+      if [[ $? -ne 0 ]]; then
+          echo "[ERROR] Failed to install wezterm"
+          return 1
+      fi
+
+      ;;
+    *)
+      echo "[ERROR] Unsupported Linux distribution: $LINUX_DISTRO"
+      return 1
+
+      ;;
+  esac
 
   echo "Wezterm installed successfully"
   return 0
