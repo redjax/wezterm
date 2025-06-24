@@ -38,6 +38,7 @@ My configuration for [Wezterm terminal emulator](https://wezterm.org).
   - Your package repositories might have a wezterm package, or you can use the [Linux `install_wezterm.sh` script](./scripts/linux/install_wezterm.sh).
 - After installing `wezterm`, run the [`install_nerdfont.sh` script](./linux/install_nerdfont.sh) to install the NerdFonts I use (Hack, FiraCode, FiraMono).
 - Copy or symlink one of the [configurations in the `configs/` directory](./configs) to `~/.config/wezterm`
+  - There is also a [script for symlinks](./scripts/linux/symlink_config.sh)
 
 ## Links
 
