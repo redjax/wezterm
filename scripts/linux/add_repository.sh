@@ -34,12 +34,43 @@ function add_wezterm_apt_repository {
   return 0
 }
 
+function add_wezterm_rpm_repository {
+  echo "Adding DNF Copr repository for Wezterm"
+  sudo dnf copr enable wezfurlong/wezterm-nightly -y
+  if [[ $? -ne 0 ]]; then
+    echo "[ERROR] Failed to add DNF Copr repository for Wezterm"
+    return 1
+  fi
+
+  echo "Wezterm DNF Copr repository added successfully"
+  return 0
+}
+
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
   . "${PARENT_DIR}/check_installed.sh"
+  . "${PARENT_DIR}/detect_distro.sh"
 
-  add_wezterm_apt_repository
-  if [[ $? -ne 0 ]]; then
-    echo "Failed to install wezterm"
-    exit 1
-  fi
+  LINUX_DISTRO=$(get_distro_id)
+
+  case "${LINUX_DISTRO}" in
+    ubuntu|debian|pop|linuxmint)
+      add_wezterm_apt_repository
+      if [[ $? -ne 0 ]]; then
+        echo "Failed to install wezterm"
+        exit 1
+      fi
+
+      ;;
+    fedora|rhel|centos|rocky|almalinux)
+      add_wezterm_rpm_repository
+      if [[ $? -ne 0 ]]; then
+        echo "Failed to install wezterm"
+        exit 1
+      fi
+      ;;
+    *)
+      echo "Unsupported Linux distribution: ${LINUX_DISTRO}"
+      exit 1
+      ;;
+  esac
 fi
