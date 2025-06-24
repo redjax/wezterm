@@ -31,6 +31,6 @@ return function(config)
     config.scrollback_lines = 3500
 
     -- Enable advanced wezterm features if wezterm terminfo exists
-    config.term = found and "wezterm" or "xterm-256color"
+    -- config.term = found and "wezterm" or "xterm-256color"
   end
   
