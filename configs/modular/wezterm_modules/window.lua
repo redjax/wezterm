@@ -24,4 +24,3 @@ return function(config)
     -- Set max fps
     config.max_fps = 120
 end
-  
