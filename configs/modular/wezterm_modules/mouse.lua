@@ -4,6 +4,18 @@ local act = wezterm.action
 return function(config)
   config.mouse_bindings = {
     {
+      -- Scroll up
+      event = { Down = { streak = 1, button = { WheelUp = 1 } } },
+      mods = 'NONE',
+      action = act.ScrollByLine(-3),
+    },
+    {
+      -- Scroll down
+      event = { Down = { streak = 1, button = { WheelDown = 1 } } },
+      mods = 'NONE',
+      action = act.ScrollByLine(3),
+    },
+    {
       -- CTRL+LeftClick = open link
       event = { Up = { streak = 1, button = "Left" } },
       mods = "CTRL",
