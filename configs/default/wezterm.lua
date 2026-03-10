@@ -230,7 +230,9 @@ config.set_environment_variables = {
 
 -- Set wezterm frontend dynamically
 -- \ Note: WebGPU does not support transparency on some platforms
-config.front_end = platform == 'windows' and "WebGpu" or "OpenGL" or "Auto"
+config.front_end = is_windows and "WebGpu"
+    or is_linux and "OpenGL"
+    or "Auto"
 
 -- KEEP THIS AT THE BOTTOM OF YOUR CONFIG
 return config

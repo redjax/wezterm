@@ -1,7 +1,9 @@
 return function(config, platform)
     -- Set GPU frontend dynamically
     -- WebGpu is faster on Windows; OpenGL supports transparency on Linux
-    config.front_end = platform.platform == 'windows' and "WebGpu" or "OpenGL" or "Auto"
+    config.front_end = platform.is_windows and "WebGpu"
+        or platform.is_linux and "OpenGL"
+        or "Auto"
 
     -- Set window geometry
     config.initial_cols = 122
