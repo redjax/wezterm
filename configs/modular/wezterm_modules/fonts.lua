@@ -1,6 +1,6 @@
 local wezterm = require 'wezterm'
 
-return function(config)
+return function(config, platform)
     -- Set font fallbacks
     local font_fallback = {
       linux = {'DejaVu Sans Mono', 'Liberation Mono'},
@@ -14,7 +14,7 @@ return function(config)
       'Hack Nerd Font Mono',
       'JetBrains Mono',
       'FiraCode Nerd Font Mono',
-      table.unpack(font_fallback[config._platform] or {'JetBrains Mono'})
+      table.unpack(font_fallback[platform.platform] or {'JetBrains Mono'})
     })
 
     -- Set font size
