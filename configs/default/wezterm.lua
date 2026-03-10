@@ -110,12 +110,15 @@ config.font = wezterm.font_with_fallback(
 config.use_cap_height_to_scale_fallback_fonts = true
 
 -- Set shell based on platform
-if get_platform() == 'windows' then
+if is_windows then
     config.default_prog = {'pwsh.exe'}
-  elseif get_platform() == 'mac' then
-    config.default_prog = {'zsh', '-l'}
-  else
-    config.default_prog = {'bash', '-l'}
+  
+  -- Wezterm will use a Unix machine's default $SHELL.
+  -- You can optionally override that here.
+  -- elseif is_mac then
+  --   config.default_prog = {'zsh', '-l'}
+  -- elseif is_linux then
+  --   config.default_prog = {'bash', '-l'}
 end
 
 -- Enable advanced wezterm features if wezterm terminfo exists
@@ -126,7 +129,7 @@ if wezterm_terminfo_exists() then
 end
 
 -- Set terminal scrollback memory
-config.scrollback_lines = 3500
+config.scrollback_lines = 10000
 
 -- Vertical spacing
 config.line_height = 1.1
@@ -147,7 +150,7 @@ config.use_fancy_tab_bar = true
 config.hide_tab_bar_if_only_one_tab = true
 
 -- Set max FPS for terminal
-config.max_fps = 120
+config.max_fps = 60
 
 -- Window padding
 config.window_padding = {
@@ -174,17 +177,47 @@ config.keys = {
         mods = 'CTRL|SHIFT',
         action = wezterm.action.ActivateCommandPalette,
     },
+    -- Explicitly bind Home and End keys
+    { key = "Home", mods = "NONE", action = wezterm.action.SendString("\x1b[H") },
+    { key = "End", mods = "NONE", action = wezterm.action.SendString("\x1b[F") },
 }
 
 -- ##################
 -- # Mouse bindings #
 -- ##################
+local act = wezterm.action
 config.mouse_bindings = {
     {
+      -- Scroll up
+      event = { Down = { streak = 1, button = { WheelUp = 1 } } },
+      mods = 'NONE',
+      action = act.ScrollByLine(-3),
+    },
+    {
+      -- Scroll down
+      event = { Down = { streak = 1, button = { WheelDown = 1 } } },
+      mods = 'NONE',
+      action = act.ScrollByLine(3),
+    },
+    {
       -- CTRL+LeftClick = open link
-      event={Up={streak=1, button="Left"}},
-      mods="CTRL",
-      action="OpenLinkAtMouseCursor",
+      event = { Up = { streak = 1, button = "Left" } },
+      mods = "CTRL",
+      action = act.OpenLinkAtMouseCursor,
+    },
+    {
+      -- RightClick: Copy if selection, else paste
+      event = { Down = { streak = 1, button = "Right" } },
+      mods = "NONE",
+      action = wezterm.action_callback(function(window, pane)
+        local sel = window:get_selection_text_for_pane(pane)
+        if sel ~= "" then
+          window:perform_action(act.CopyTo("ClipboardAndPrimarySelection"), pane)
+          window:perform_action(act.ClearSelection, pane)
+        else
+          window:perform_action(act.PasteFrom("Clipboard"), pane)
+        end
+      end),
     },
 }
 
@@ -196,15 +229,8 @@ config.set_environment_variables = {
 }
 
 -- Set wezterm frontend dynamically
--- \ Note: WebGPU does not support transparency
--- if wezterm.target_triple:find('windows') then
---   config.front_end = "WebGpu"
---   config.webgpu_power_preference = "HighPerformance"
--- elseif wezterm.target_triple:find('linux') then
---   config.front_end = "OpenGL"
--- else
---   config.front_end = "WebGpu"
--- end
+-- \ Note: WebGPU does not support transparency on some platforms
+config.front_end = platform == 'windows' and "WebGpu" or "OpenGL" or "Auto"
 
 -- KEEP THIS AT THE BOTTOM OF YOUR CONFIG
 return config

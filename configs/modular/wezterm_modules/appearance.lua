@@ -1,6 +1,6 @@
 local wezterm = require 'wezterm'
 
-return function(config)
+return function(config, platform)
     -- Function to detect dark/light system setting
     local function get_appearance()
       if wezterm.gui then

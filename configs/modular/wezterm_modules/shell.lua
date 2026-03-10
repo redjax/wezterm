@@ -1,10 +1,12 @@
--- wezterm_modules/shell.lua
 return function(config, platform)
-    if platform.platform == 'windows' then
+    if platform.is_windows then
       config.default_prog = {'pwsh.exe'}
-    elseif platform.platform == 'mac' then
-      config.default_prog = {'zsh', '-l'}
-    else
-      config.default_prog = {'bash', '-l'}
+
+    -- Wezterm will use a Unix machine's default $SHELL.
+    -- You can optionally override that here.
+    -- elseif platform.is_mac then
+    --   config.default_prog = {'zsh', '-l'}
+    -- elseif platform.is_linux then
+    --   config.default_prog = {'bash', '-l'}
     end
 end
