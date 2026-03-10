@@ -178,8 +178,8 @@ config.keys = {
         action = wezterm.action.ActivateCommandPalette,
     },
     -- Explicitly bind Home and End keys
-    { key = "Home", mods = "NONE", action = wezterm.action.SendString("\x1b[H") },
-    { key = "End", mods = "NONE", action = wezterm.action.SendString("\x1b[F") },
+    { key = "Home", mods = "NONE", action = wezterm.action.SendKey({ key = "Home" }) },
+    { key = "End", mods = "NONE", action = wezterm.action.SendKey({ key = "End" }) },
 }
 
 -- ##################
