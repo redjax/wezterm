@@ -101,6 +101,7 @@ config.font_size = 12
 config.font = wezterm.font_with_fallback(
   {
     'Hack Nerd Font Mono',
+    'JetBrains Mono',
     'FiraCode Nerd Font Mono',
     table.unpack(font_fallback[platform] or {'DejaVu Sans Mono'})
   }
