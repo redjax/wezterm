@@ -93,8 +93,8 @@ local font_fallback = {
 }
 
 -- Set initial window geometry
-config.initial_cols = 120
-config.initial_rows = 28
+config.initial_cols = 110
+config.initial_rows = 25
 
 -- Set term starting directory
 config.default_cwd = wezterm.home_dir
