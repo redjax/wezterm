@@ -182,6 +182,10 @@ config.command_palette_font_size = 13
 -- ############
 -- # KEYBINDS #
 -- ############
+
+-- Add bypasses, i.e. to allow CTRL+Click to open links
+config.bypass_mouse_reporting_modifiers = 'SHIFT'
+
 config.keys = {
     -- ALT+ENTER = split horizontal
     { key = "Enter", mods = "ALT",        action = wezterm.action { SplitHorizontal = { domain = "CurrentPaneDomain" } } },
@@ -216,10 +220,14 @@ config.mouse_bindings = {
         action = act.ScrollByLine(3),
     },
     {
-        -- CTRL+LeftClick = open link
-        event = { Up = { streak = 1, button = "Left" } },
-        mods = "CTRL",
-        action = act.OpenLinkAtMouseCursor,
+      event = { Down = { streak = 1, button = 'Left' } },
+      mods = 'CTRL',
+      action = wezterm.action.Nop,
+    },
+    {
+      event = { Up = { streak = 1, button = 'Left' } },
+      mods = 'CTRL',
+      action = wezterm.action.OpenLinkAtMouseCursor,
     },
     {
         -- RightClick: Copy if selection, else paste
